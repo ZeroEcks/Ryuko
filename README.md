@@ -1,4 +1,0 @@
-Ryuko
-=====
-
-The Gifinator
