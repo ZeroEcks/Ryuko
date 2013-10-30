@@ -1,2 +1,2 @@
 # Ryoko
-The gifiniaor
+Gifinator

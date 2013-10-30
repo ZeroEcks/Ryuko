@@ -1,3 +1,4 @@
+#!/usr/bin/python2
 # Inspired by
 # http://rarlindseysmash.com/posts/stupid-programmer-tricks-and-star-wars-gifs
 #         via https://news.ycombinator.com/item?id=6633490
@@ -12,7 +13,6 @@
 from subprocess import Popen, PIPE
 import json
 import tempfile
-import random
 import glob
 import os
 import sys
@@ -54,13 +54,13 @@ def make_gif(output_file, frames, fps):
 
 def create_gif(input_file, output_file, start, end):
     total_duration = get_duration(input_file)
-    if start  end > total_duration or start > end or end > total_duration:
+    if start - end > total_duration or start > end or end > total_duration:
         return "Error: Length requested is greater than the length of the video"
-    frames = get_frames(input_file, start, 3, 8)
-    make_gif(output_file, frames, 24)
+    frames = get_frames(input_file, start, end - start, fps=8)
+    make_gif(output_file, frames, 8)
     for frame in frames:
         os.unlink(frame)
     print output_file
 
 if __name__ == '__main__':
-    create_gif(sys.argv[1], outputfile=sys.argv[2])
+    create_gif(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
