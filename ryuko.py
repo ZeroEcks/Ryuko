@@ -10,57 +10,62 @@
 # Usage:
 #   python gifgif.py a_video_file.avi
 
-from subprocess import Popen, PIPE
-import json
-import tempfile
+import subprocess
+import argparse
 import glob
 import os
-import sys
 
 
 def run(cmd):
-    return Popen([str(c) for c in cmd], stdout=PIPE, stderr=PIPE).communicate()[0]
+    print [str(c) for c in cmd]
+    return subprocess.call([str(c) for c in cmd])
 
-# Check the "convert" command is a thing.
-try:
-    convert_command = ["gm", "convert"]
-    run(convert_command)
-except:
-    convert_command = ["convert"]
-    try:
-        run(convert_command)
-    except:
-        raise ValueError("Unable to find 'convert' or 'gm convert'")
+convert_command = "C:\Program Files\ImageMagick-6.8.7-Q16\convert.exe"
 
 
-def get_duration(input_file):
-    data = json.loads(run(["ffprobe", "-loglevel", "quiet", "-of", "json", "-show_streams", "-i", input_file]))
-    return float(data["streams"][0]["duration"])
-
-
-def get_frames(input_file, start, duration, fps=10):
-    temp_dir = tempfile.mkdtemp(prefix="gif")
-    run(["ffmpeg", "-loglevel", "quiet", "-i", input_file, "-ss", start, "-t", duration, "-r", fps, "-f", "image2", os.path.join(temp_dir, "%08d.png")])
-    return glob.glob(os.path.join(temp_dir, "*.png"))
+def get_frames(input_file, start, duration, fps=10, flip=False):
+    if flip is True:
+        run(["ffmpeg", "-ss", start, "-i", input_file, "-t",
+            duration, "-r", fps, "-vf", "scale=500:-1, hflip,vflip",
+            os.path.join("./gif", "%08d.png")])
+    else:
+        run(["ffmpeg", "-ss", start, "-i", input_file, "-t",
+            duration, "-r", fps, "-vf", "scale=500:-1",
+            os.path.join("./gif", "%08d.png")])
+    return glob.glob(os.path.join(os.getcwd(), "gif", "*.png"))
 
 
 def make_gif(output_file, frames, fps):
-    run(convert_command + ["-delay", "1x%d" % fps] + frames + ["-coalesce", output_file])
+    run([convert_command] + [".\gif\*png"] + ["--coalesce", output_file])
     try:
         run(["gifsicle", "-O2", "--colors", 256, "--batch", "-i", output_file])
     except:
         pass
 
 
-def create_gif(input_file, output_file, start, end):
-    total_duration = get_duration(input_file)
-    if start - end > total_duration or start > end or end > total_duration:
-        return "Error: Length requested is greater than the length of the video"
-    frames = get_frames(input_file, start, end - start, fps=8)
-    make_gif(output_file, frames, 8)
+#def create_gif(input_file, output_file, start, duration):
+def create_gif(args):
+    frames = get_frames(args.input_file, args.start, args.duration,
+                        fps=args.fps, flip=args.flip)
+    make_gif(args.output_file, frames, args.fps)
     for frame in frames:
         os.unlink(frame)
-    print output_file
+    print args.output_file
 
 if __name__ == '__main__':
-    create_gif(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_file",
+                        help="The input video file (anything ffmpeg supports)",
+                        type=str)
+    parser.add_argument("output_file", help="The name of the output gif.",
+                        type=str)
+    parser.add_argument("start", help="The time in seconds to start the gif",
+                        type=float)
+    parser.add_argument("duration", help="Duration to create the gif",
+                        type=float)
+    parser.add_argument("-f", "--flip", help="Flip the image upside down.",
+                        action="store_true", default=False)
+    parser.add_argument("-fps", "--fps", help="FPS of the gif", type=int,
+                        default=8)
+    args = parser.parse_args()
+    create_gif(args)
