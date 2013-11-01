@@ -3,9 +3,11 @@ Ryuko creates gifs from (almost) any video file. It's pretty neat so like if you
 
 ## How to use Ryuko!
 This is aimed at begginers with no command line knowledge. If you know what your doing, here is the outline.
+
 1. Clone Ryuko
 2. Run with Python 2.7
 3. Add it to your path if you want.
+
 Skip to the next section if you want help on the command.
 ### Setting things up
 Clone (`git clone`) or download this repository (The "Download Zip" button on the left if you don't know what I mean). Extract everything if you downloaded an archive.
