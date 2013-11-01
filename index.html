@@ -33,7 +33,55 @@
         <h1>
 <a name="ryuko" class="anchor" href="#ryuko"><span class="octicon octicon-link"></span></a>Ryuko</h1>
 
-<p>Ryuko creates gifs from (almost) any video file. It's pretty neat so like if you like gifs, use it</p>
+<p>Ryuko creates gifs from (almost) any video file. It's pretty neat so like if you like gifs, use it.</p>
+
+<h2>
+<a name="how-to-use-ryuko" class="anchor" href="#how-to-use-ryuko"><span class="octicon octicon-link"></span></a>How to use Ryuko!</h2>
+
+<p>This is aimed at begginers with no command line knowledge. If you know what your doing, here is the outline.
+1. Clone Ryuko
+2. Run with Python 2.7
+3. Add it to your path if you want.
+Skip to the next section if you want help on the command.</p>
+
+<h3>
+<a name="setting-things-up" class="anchor" href="#setting-things-up"><span class="octicon octicon-link"></span></a>Setting things up</h3>
+
+<p>Clone (<code>git clone</code>) or download this repository (The "Download Zip" button on the left if you don't know what I mean). Extract everything if you downloaded an archive.</p>
+
+<p><code>cd</code> into the directory where you extracted Ryuko to and use <code>python ryuko.py</code> to run it. Here is the example output.</p>
+
+<pre><code>PS F:\code\Ryuko&gt; python .\ryuko.py
+usage: ryuko.py [-h] [-f] [-b] [-fps FPS]
+                input_file output_file start duration
+ryuko.py: error: too few arguments
+</code></pre>
+
+<p>If you see an error along the lines of "Python not found" or that Python isn't a command, go and make sure python (2.7 is used) is in your path and uses the command <code>python</code>. If you got output like mine, you are ready to rock and roll!</p>
+
+<h3>
+<a name="using-ryuko" class="anchor" href="#using-ryuko"><span class="octicon octicon-link"></span></a>Using Ryuko</h3>
+
+<p>To get the usage for <code>ryuko.py</code> just run <code>python ryuko.py -h</code></p>
+
+<pre><code>usage: ryuko.py [-h] [-f] [-b] [-fps FPS]
+                input_file output_file start duration
+
+positional arguments:
+  input_file           The input video file (anything ffmpeg supports)
+  output_file          The name of the output gif.
+  start                The time in seconds to start the gif
+  duration             Duration to create the gif
+
+optional arguments:
+  -h, --help           show this help message and exit
+  -f, --flip           Flip the image upside down.
+  -b, --use-builtin    Use the system `convert`, `ffmpeg` and `gifsicle`
+                       commands.
+  -fps FPS, --fps FPS  FPS of the gif
+</code></pre>
+
+<p>Most of the options are pretty self explanatory really, <code>input_file</code> is any video file that ffmpeg can use and <code>output_file</code> is the name of your gif. <code>start</code> is the time in seconds to start creating the gif and <code>duration</code> is how long to make the gif. The other flags are <code>-f</code> to flip the image upside down, <code>-b</code> to use the builtin commands (Use this on not windows!) and <code>-fps FPS</code> is the FPS of the gif.</p>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
