@@ -2,55 +2,50 @@
 # Inspired by
 # http://rarlindseysmash.com/posts/stupid-programmer-tricks-and-star-wars-gifs
 #         via https://news.ycombinator.com/item?id=6633490
-# Requires
-# * a reasonably recent ffmpeg suite
-# * Graphicsmagick or ImageMagick
-# * optionally: Gifsicle
-# * an input video file
-# Usage:
-#   python gifgif.py a_video_file.avi
 
 import subprocess
 import argparse
 import glob
 import os
 
+CONVERT = os.path.join("bin", "convert")
+OPTIMISE = os.path.join("bin", "gifsicle")
+FFMPEG = os.path.join("bin", "ffmpeg")
 
 def run(cmd):
-    print [str(c) for c in cmd]
+    """ Runs a command passed as a list """
     return subprocess.call([str(c) for c in cmd])
 
-convert_command = "C:\Program Files\ImageMagick-6.8.7-Q16\convert.exe"
-
-
 def get_frames(input_file, start, duration, fps=10, flip=False):
+    """ Extracts the frames using FFMPEG """
+    print "Extracting frames (call this 25%)"
     if flip is True:
-        run(["ffmpeg", "-ss", start, "-i", input_file, "-t",
+        run([FFMPEG, "-loglevel", "quiet", "-ss", start, "-i", input_file, "-t",
             duration, "-r", fps, "-vf", "scale=500:-1, hflip,vflip",
             os.path.join("./gif", "%08d.png")])
     else:
-        run(["ffmpeg", "-ss", start, "-i", input_file, "-t",
+        run([FFMPEG, "-loglevel", "quiet", "-ss", start, "-i", input_file, "-t",
             duration, "-r", fps, "-vf", "scale=500:-1",
             os.path.join("./gif", "%08d.png")])
     return glob.glob(os.path.join(os.getcwd(), "gif", "*.png"))
 
 
-def make_gif(output_file, frames, fps):
-    run([convert_command] + [".\gif\*png"] + ["--coalesce", output_file])
-    try:
-        run(["gifsicle", "-O2", "--colors", 256, "--batch", "-i", output_file])
-    except:
-        pass
+def make_gif(output_file, frames):
+    """ Creates the gif and optimises it """
+    print "Creating gif (Call this 80%)"
+    run([CONVERT] + [os.path.join("gif", "*png")] + [output_file])
+    print "Optimising (Call this 99%)"
+    run([OPTIMISE, "-O3", "--colors", 256, "--batch", "-i", output_file])
 
 
-#def create_gif(input_file, output_file, start, duration):
 def create_gif(args):
+    """ Calls functions to extract the frames and create the gif,
+    then remove the frames """
     frames = get_frames(args.input_file, args.start, args.duration,
                         fps=args.fps, flip=args.flip)
-    make_gif(args.output_file, frames, args.fps)
+    make_gif(args.output_file, frames)
     for frame in frames:
         os.unlink(frame)
-    print args.output_file
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -65,7 +60,14 @@ if __name__ == '__main__':
                         type=float)
     parser.add_argument("-f", "--flip", help="Flip the image upside down.",
                         action="store_true", default=False)
+    parser.add_argument("-b", "--use-builtin",
+                        help="Use the system `convert`, `ffmpeg`\
+                        and `gifsicle` commands.", action="store_true")
     parser.add_argument("-fps", "--fps", help="FPS of the gif", type=int,
                         default=8)
-    args = parser.parse_args()
-    create_gif(args)
+    arguments = parser.parse_args()
+    if arguments.use_builtin is True:
+        CONVERT = "convert"
+        OPTIMISE = "gifsicle"
+        FFMPEG = "ffmpeg"
+    create_gif(arguments)
