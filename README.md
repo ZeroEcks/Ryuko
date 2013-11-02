@@ -76,6 +76,3 @@ Optimising (Call this 99%)
 ```
 ![Mirai Kuriyama modeling for a camera](http://i.minus.com/iY6oDoLztpi70.gif)
 <<<<<<< HEAD
-
-=======
->>>>>>> 265ce080cb767d6a631aa4c48196fd85ce3cdf5f
