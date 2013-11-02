@@ -1,3 +1,7 @@
+*.gif
+*.mkv
+*.db
+*.swp
 *.py[cod]
 
 # C extensions
