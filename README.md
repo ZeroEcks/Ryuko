@@ -75,4 +75,3 @@ Creating gif (Call this 80%)
 Optimising (Call this 99%)
 ```
 ![Mirai Kuriyama modeling for a camera](http://i.minus.com/iY6oDoLztpi70.gif)
-<<<<<<< HEAD
