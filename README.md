@@ -42,3 +42,36 @@ optional arguments:
   -fps FPS, --fps FPS  FPS of the gif
 ```
 Most of the options are pretty self explanatory really, `input_file` is any video file that ffmpeg can use and `output_file` is the name of your gif. `start` is the time in seconds to start creating the gif and `duration` is how long to make the gif. The other flags are `-f` to flip the image upside down, `-b` to use the builtin commands (Use this on not windows!) and `-fps FPS` is the FPS of the gif.
+
+### Examples
+#### Create a gif
+```
+PS F:\code\Ryuko> python .\ryuko.py .\knk03.mkv output.gif 600 3
+Extracting frames (call this 25%)
+Creating gif (Call this 80%)
+Optimising (Call this 99%)
+```
+
+This is the most basic usage of the command, in human terms it says "Create a gif of knk03.mkv at 600 seconds that lasts 3 seconds and name it output.gif"
+
+![The gif created. It has a nice flame in the background](http://i.minus.com/ibaeDDpeiW0GIu.gif)
+
+#### Create a gif with milliseconds
+```
+PS F:\code\Ryuko> python .\ryuko.py .\knk03.mkv output2.gif 543.1 1.8
+Extracting frames (call this 25%)
+Creating gif (Call this 80%)
+Optimising (Call this 99%)
+```
+
+As you can see, we just added a decimal place and it works. Pretty neat.
+
+![Akhito nodding. Yet another example gif.](http://i.minus.com/idfntneToCDxi.gif)
+#### Create and flip a gif
+```
+PS F:\code\Ryuko> python ryuko.py -f knk05.mkv output3.gif 950.5 3
+Extracting frames (call this 25%)
+Creating gif (Call this 80%)
+Optimising (Call this 99%)
+```
+![Mirai Kuriyama modeling for a camera](http://i.minus.com/iY6oDoLztpi70.gif)
