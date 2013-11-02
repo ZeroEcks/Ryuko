@@ -38,11 +38,13 @@
 <h2>
 <a name="how-to-use-ryuko" class="anchor" href="#how-to-use-ryuko"><span class="octicon octicon-link"></span></a>How to use Ryuko!</h2>
 
-<p>This is aimed at begginers with no command line knowledge. If you know what your doing, here is the outline.
-1. Clone Ryuko
-2. Run with Python 2.7
-3. Add it to your path if you want.
-Skip to the next section if you want help on the command.</p>
+<p>This is aimed at begginers with no command line knowledge. If you know what your doing, here is the outline.</p>
+
+<ol>
+<li>Clone Ryuko</li>
+<li>Run with Python 2.7</li>
+<li>Add it to your path if you want.</li>
+</ol><p>Skip to the next section if you want help on the command.</p>
 
 <h3>
 <a name="setting-things-up" class="anchor" href="#setting-things-up"><span class="octicon octicon-link"></span></a>Setting things up</h3>
@@ -82,6 +84,46 @@ optional arguments:
 </code></pre>
 
 <p>Most of the options are pretty self explanatory really, <code>input_file</code> is any video file that ffmpeg can use and <code>output_file</code> is the name of your gif. <code>start</code> is the time in seconds to start creating the gif and <code>duration</code> is how long to make the gif. The other flags are <code>-f</code> to flip the image upside down, <code>-b</code> to use the builtin commands (Use this on not windows!) and <code>-fps FPS</code> is the FPS of the gif.</p>
+
+<h3>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<h4>
+<a name="create-a-gif" class="anchor" href="#create-a-gif"><span class="octicon octicon-link"></span></a>Create a gif</h4>
+
+<pre><code>PS F:\code\Ryuko&gt; python .\ryuko.py .\knk03.mkv output.gif 600 3
+Extracting frames (call this 25%)
+Creating gif (Call this 80%)
+Optimising (Call this 99%)
+</code></pre>
+
+<p>This is the most basic usage of the command, in human terms it says "Create a gif of knk03.mkv at 600 seconds that lasts 3 seconds and name it output.gif"</p>
+
+<p><img src="http://i.minus.com/ibaeDDpeiW0GIu.gif" alt="The gif created. It has a nice flame in the background"></p>
+
+<h4>
+<a name="create-a-gif-with-milliseconds" class="anchor" href="#create-a-gif-with-milliseconds"><span class="octicon octicon-link"></span></a>Create a gif with milliseconds</h4>
+
+<pre><code>PS F:\code\Ryuko&gt; python .\ryuko.py .\knk03.mkv output2.gif 543.1 1.8
+Extracting frames (call this 25%)
+Creating gif (Call this 80%)
+Optimising (Call this 99%)
+</code></pre>
+
+<p>As you can see, we just added a decimal place and it works. Pretty neat.</p>
+
+<p><img src="http://i.minus.com/idfntneToCDxi.gif" alt="Akhito nodding. Yet another example gif."></p>
+
+<h4>
+<a name="create-and-flip-a-gif" class="anchor" href="#create-and-flip-a-gif"><span class="octicon octicon-link"></span></a>Create and flip a gif</h4>
+
+<pre><code>PS F:\code\Ryuko&gt; python ryuko.py -f knk05.mkv output3.gif 950.5 3
+Extracting frames (call this 25%)
+Creating gif (Call this 80%)
+Optimising (Call this 99%)
+</code></pre>
+
+<p><img src="http://i.minus.com/iY6oDoLztpi70.gif" alt="Mirai Kuriyama modeling for a camera"></p>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
