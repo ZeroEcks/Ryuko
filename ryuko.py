@@ -18,7 +18,8 @@ def run(cmd):
     return subprocess.call([str(c) for c in cmd])
 
 def extract_subs(input_file):
-    run([FFMPEG, "-loglevel", "fatal", "-i", input_file, "-map", "0:s:0", SUBFILE])
+    run([FFMPEG, "-loglevel", "fatal", "-i", input_file, "-map", "0:s:0",
+         SUBFILE])
 
 def offset_subs(subfile, offset):
     run(["python", "subslider.py", subfile, "-%r" % int(offset)])
