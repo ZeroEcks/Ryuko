@@ -3,10 +3,10 @@
 # http://rarlindseysmash.com/posts/stupid-programmer-tricks-and-star-wars-gifs
 # via https://news.ycombinator.com/item?id=6633490
 
-import subprocess
 import argparse
 import glob
 import os
+import subprocess
 
 CONVERT = os.path.join("bin", "convert")
 OPTIMISE = os.path.join("bin", "gifsicle")
@@ -21,10 +21,12 @@ def run(cmd, environment=False):
         return subprocess.call([str(c) for c in cmd], env=environment)
 
 def extract_subs(input_file):
+    """ Extracts the subtitles to a .srt file"""
     run([FFMPEG, "-loglevel", "fatal", "-i", input_file, "-map", "0:s:0",
          SUBFILE])
 
 def offset_subs(subfile, offset):
+    """ Offsets the subtitles by the specified ammount """
     run(["python", "subslider.py", subfile, "-%r" % int(offset)])
 
 def get_frames(input_file, start, duration, fps=10, flip=False):
@@ -41,13 +43,21 @@ def get_frames(input_file, start, duration, fps=10, flip=False):
     return glob.glob(os.path.join(os.getcwd(), "gif", "*.png"))
 
 
-def make_gif(output_file, frames):
+def make_gif(output_file, fps=10):
     """ Creates the gif and optimises it """
     print "Creating gif (Call this 80%)"
-    run([CONVERT] + [os.path.join("gif", "*png")] + [output_file])
+    run([CONVERT, "-delay", str(100/fps), os.path.join("gif", "*png"), output_file])
     print "Optimising (Call this 99%)"
     run([OPTIMISE, "-O3", "--colors", 256, "--batch", "-i", output_file])
 
+def cleanup(frames, sub="sub.srt"):
+    """ Deletes all files created """
+    for frame in frames:
+        os.unlink(frame)
+    try:
+        os.unlink(sub)
+    except:
+        pass
 
 def create_gif(args):
     """ Calls functions to extract the frames and create the gif,
@@ -56,9 +66,8 @@ then remove the frames """
     offset_subs(SUBFILE, args.start)  # I will leave for you to figure out.
     frames = get_frames(args.input_file, args.start, args.duration,
                         fps=args.fps, flip=args.flip)
-    make_gif(args.output_file, frames)
-    for frame in frames:
-        os.unlink(frame)
+    make_gif(args.output_file, fps=args.fps)
+    cleanup(frames)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
