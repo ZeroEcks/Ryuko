@@ -25,21 +25,27 @@ If you see an error along the lines of "Python not found" or that Python isn't a
 ### Using Ryuko
 To get the usage for `ryuko.py` just run `python ryuko.py -h`
 ```
-usage: ryuko.py [-h] [-f] [-b] [-fps FPS]
+F:\code\Ryuko [master +0 ~1 -0]> python .\ryuko.py -h
+usage: ryuko.py [-h] [-f] [-s] [-sf SUBTITLE_FILE] [-b] [-fps FPS]
                 input_file output_file start duration
 
 positional arguments:
-  input_file           The input video file (anything ffmpeg supports)
-  output_file          The name of the output gif.
-  start                The time in seconds to start the gif
-  duration             Duration to create the gif
+  input_file            The input video file (anything ffmpeg supports)
+  output_file           The name of the output gif.
+  start                 The time in seconds to start the gif
+  duration              Duration to create the gif
 
 optional arguments:
-  -h, --help           show this help message and exit
-  -f, --flip           Flip the image upside down.
-  -b, --use-builtin    Use the system `convert`, `ffmpeg` and `gifsicle`
-                       commands.
-  -fps FPS, --fps FPS  FPS of the gif
+  -h, --help            show this help message and exit
+  -f, --flip            Flip the image upside down.
+  -s, --subtitle        Burn in the embedded (use--subtitle-file if not)
+                        subtitles to the video
+  -sf SUBTITLE_FILE, --subtitle-file SUBTITLE_FILE
+                        The subtitle file,for if there is not embedded
+                        subtitles, enables -s.
+  -b, --use-builtin     Use the system `convert`, `ffmpeg`and `gifsicle`
+                        commands.
+  -fps FPS, --fps FPS   FPS of the gif
 ```
 Most of the options are pretty self explanatory really, `input_file` is any video file that ffmpeg can use and `output_file` is the name of your gif. `start` is the time in seconds to start creating the gif and `duration` is how long to make the gif. The other flags are `-f` to flip the image upside down, `-b` to use the builtin commands (Use this on not windows!) and `-fps FPS` is the FPS of the gif.
 
