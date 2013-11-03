@@ -13,9 +13,12 @@ OPTIMISE = os.path.join("bin", "gifsicle")
 FFMPEG = os.path.join("bin", "ffmpeg")
 SUBFILE = "sub.srt"
 
-def run(cmd):
+def run(cmd, environment=False):
     """ Runs a command passed as a list """
-    return subprocess.call([str(c) for c in cmd])
+    if environment is False:
+        return subprocess.call([str(c) for c in cmd])
+    else:
+        return subprocess.call([str(c) for c in cmd], env=environment)
 
 def extract_subs(input_file):
     run([FFMPEG, "-loglevel", "fatal", "-i", input_file, "-map", "0:s:0",
