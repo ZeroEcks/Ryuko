@@ -1,4 +1,6 @@
 *.gif
+*.ass
+*.srt
 *.mkv
 *.db
 *.swp
