@@ -66,21 +66,27 @@ ryuko.py: error: too few arguments
 
 <p>To get the usage for <code>ryuko.py</code> just run <code>python ryuko.py -h</code></p>
 
-<pre><code>usage: ryuko.py [-h] [-f] [-b] [-fps FPS]
+<pre><code>F:\code\Ryuko [master +0 ~1 -0]&gt; python .\ryuko.py -h
+usage: ryuko.py [-h] [-f] [-s] [-sf SUBTITLE_FILE] [-b] [-fps FPS]
                 input_file output_file start duration
 
 positional arguments:
-  input_file           The input video file (anything ffmpeg supports)
-  output_file          The name of the output gif.
-  start                The time in seconds to start the gif
-  duration             Duration to create the gif
+  input_file            The input video file (anything ffmpeg supports)
+  output_file           The name of the output gif.
+  start                 The time in seconds to start the gif
+  duration              Duration to create the gif
 
 optional arguments:
-  -h, --help           show this help message and exit
-  -f, --flip           Flip the image upside down.
-  -b, --use-builtin    Use the system `convert`, `ffmpeg` and `gifsicle`
-                       commands.
-  -fps FPS, --fps FPS  FPS of the gif
+  -h, --help            show this help message and exit
+  -f, --flip            Flip the image upside down.
+  -s, --subtitle        Burn in the embedded (use--subtitle-file if not)
+                        subtitles to the video
+  -sf SUBTITLE_FILE, --subtitle-file SUBTITLE_FILE
+                        The subtitle file,for if there is not embedded
+                        subtitles, enables -s.
+  -b, --use-builtin     Use the system `convert`, `ffmpeg`and `gifsicle`
+                        commands.
+  -fps FPS, --fps FPS   FPS of the gif
 </code></pre>
 
 <p>Most of the options are pretty self explanatory really, <code>input_file</code> is any video file that ffmpeg can use and <code>output_file</code> is the name of your gif. <code>start</code> is the time in seconds to start creating the gif and <code>duration</code> is how long to make the gif. The other flags are <code>-f</code> to flip the image upside down, <code>-b</code> to use the builtin commands (Use this on not windows!) and <code>-fps FPS</code> is the FPS of the gif.</p>
