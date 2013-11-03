@@ -11,21 +11,28 @@ import os
 CONVERT = os.path.join("bin", "convert")
 OPTIMISE = os.path.join("bin", "gifsicle")
 FFMPEG = os.path.join("bin", "ffmpeg")
+SUBFILE = "sub.srt"
 
 def run(cmd):
     """ Runs a command passed as a list """
     return subprocess.call([str(c) for c in cmd])
 
+def extract_subs(input_file):
+    run([FFMPEG, "-loglevel", "fatal", "-i", input_file, "-map", "0:s:0", SUBFILE])
+
+def offset_subs(subfile, offset):
+    run(["python", "subslider.py", subfile, "-%r" % int(offset)])
+
 def get_frames(input_file, start, duration, fps=10, flip=False):
     """ Extracts the frames using FFMPEG """
     print "Extracting frames (call this 25%)"
     if flip is True:
-        run([FFMPEG, "-loglevel", "quiet", "-ss", start, "-i", input_file, "-t",
+        run([FFMPEG, "-loglevel", "fatal", "-ss", start, "-i", input_file, "-t",
             duration, "-r", fps, "-vf", "scale=500:-1, hflip,vflip",
             os.path.join("./gif", "%08d.png")])
     else:
-        run([FFMPEG, "-loglevel", "quiet", "-ss", start, "-i", input_file, "-t",
-            duration, "-r", fps, "-vf", "scale=500:-1",
+        run([FFMPEG, "-loglevel", "fatal", "-ss", start, "-i", input_file, "-t",
+            duration, "-r", fps, "-vf", "scale=500:-1,subtitles=sub.srt",
             os.path.join("./gif", "%08d.png")])
     return glob.glob(os.path.join(os.getcwd(), "gif", "*.png"))
 
@@ -41,6 +48,8 @@ def make_gif(output_file, frames):
 def create_gif(args):
     """ Calls functions to extract the frames and create the gif,
 then remove the frames """
+    extract_subs(args.input_file)
+    offset_subs(SUBFILE, args.start)  # I will leave for you to figure out.
     frames = get_frames(args.input_file, args.start, args.duration,
                         fps=args.fps, flip=args.flip)
     make_gif(args.output_file, frames)
