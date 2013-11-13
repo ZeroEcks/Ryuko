@@ -12,7 +12,7 @@ import subprocess
 CONVERT = os.path.join("bin", "convert")
 OPTIMISE = os.path.join("bin", "gifsicle")
 FFMPEG = os.path.join("bin", "ffmpeg")
-LOGLEVEL = "fatal"
+LOGLEVEL = "info"
 
 
 def run(cmd, environment=False):
@@ -95,7 +95,8 @@ def create_gif(args):
         #    i =+ 1
         #del i
         extract_subs(args.input_file, args.subtitle_file)
-        offset_subs(args.subtitle_file, args.start)
+        if args.subtitle_offset is False:
+            offset_subs(args.subtitle_file, args.start)
 
     frames = get_frames(args.input_file, args.start, args.duration,
                         fps=args.fps, flip=args.flip, sub=args.subtitle,
@@ -103,6 +104,14 @@ def create_gif(args):
                         y_scale=args.y)
     make_gif(args.output_file, fps=args.fps)
     cleanup(frames, sub=args.subtitle_file)
+
+
+def main(arguments):
+    if arguments.use_builtin is True:
+        CONVERT = "bin/convert"
+        OPTIMISE = "gifsicle"
+        FFMPEG = "ffmpeg"
+    create_gif(arguments)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -135,6 +144,10 @@ If -x isn't set, it will keep it in proportion",
 --subtitle-file if not) subtitles to the video", action="store_true",
                         default=False)
 
+    parser.add_argument("-so", "--subtitle-offset", help="Doesn't offset the\
+subtitles to align with the video (Probably don't want this)",
+                        action="store_true", default=False)
+
     parser.add_argument("-sf", "--subtitle-file", help="The subtitle file,\
 for if there is not embedded subtitles, enables -s.", default=False, type=str)
 
@@ -146,8 +159,4 @@ and `gifsicle` commands.", action="store_true")
                         default=8)
 
     arguments = parser.parse_args()
-    if arguments.use_builtin is True:
-        CONVERT = "bin/convert"
-        OPTIMISE = "gifsicle"
-        FFMPEG = "ffmpeg"
-    create_gif(arguments)
+    main(arguments)
